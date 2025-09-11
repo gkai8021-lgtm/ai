@@ -9,9 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    
     "@vercel/blob": "^0.26.0",
-  
     "next": "latest",
     "react": "^18",
     "react-dom": "^18",
@@ -30,8 +28,5 @@
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
     "typescript": "5.8.3"
-    "engines": {
-  "node": "18.x"
-}
   }
 }
