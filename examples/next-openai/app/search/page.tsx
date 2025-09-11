@@ -6,6 +6,9 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function SearchPage() {
+  // Prevent running during build (SSR)
+  if (typeof window === 'undefined') return null;
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const query = searchParams.get('q') || '';
@@ -13,15 +16,22 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!query) return;
+
     const fetchData = async () => {
-      setLoading(true);
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-      const data = await res.json();
-      setResult(data.answer);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        setResult(data.answer || 'No answer returned.');
+      } catch (err) {
+        setResult('Error fetching search results.');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    if (query) fetchData();
+    fetchData();
   }, [query]);
 
   const routeToTool = (type: string, tone = 'friendly') => {
