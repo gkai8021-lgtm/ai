@@ -4,7 +4,15 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const q = searchParams.get('q');
 
-  if (!q) return NextResponse.json({ error: 'No query provided' }, { status: 400 });
+  if (!q) {
+    return NextResponse.json({ error: 'No query provided' }, { status: 400 });
+  }
+
+  if (!process.env.TAVILY_API_KEY || !process.env.OPENROUTER_API_KEY) {
+    return NextResponse.json({
+      answer: `Missing API keys. Add TAVILY_API_KEY and OPENROUTER_API_KEY to Vercel.`,
+    });
+  }
 
   try {
     const tavilyRes = await fetch('https://api.tavily.com/search', {
@@ -41,6 +49,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ answer, context });
   } catch (err) {
-    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
+    console.error('API error:', err);
+    return NextResponse.json({ answer: 'Something went wrong. Try again later.' });
   }
 }
