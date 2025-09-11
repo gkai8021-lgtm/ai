@@ -31,20 +31,24 @@ export default function SearchPage() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Search Results</h1>
-      <p className="mb-6 text-gray-600">You asked: <strong>{query}</strong></p>
-
-      {loading ? <p>Loading...</p> : (
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
         <>
-          <div className="bg-gray-100 p-4 rounded-md whitespace-pre-wrap mb-6">
-            {result}
-          </div>
-
-          <h3 className="font-semibold text-lg mb-2">Action Layer:</h3>
-          <div className="grid sm:grid-cols-2 gap-4">
-            <button className="border p-3 rounded-md hover:bg-gray-100" onClick={() => routeToTool('blog')}>📝 Turn Into Blog Post</button>
-            <button className="border p-3 rounded-md hover:bg-gray-100" onClick={() => routeToTool('summary')}>📌 Summarize</button>
-            <button className="border p-3 rounded-md hover:bg-gray-100" onClick={() => routeToTool('tiktok')}>🎥 Create TikTok Script</button>
-            <button className="border p-3 rounded-md hover:bg-gray-100" onClick={() => routeToTool('email')}>📧 Generate Email</button>
+          <pre className="whitespace-pre-wrap text-gray-700 mb-6">{result}</pre>
+          <div className="flex gap-4">
+            <button
+              onClick={() => routeToTool('blog')}
+              className="px-4 py-2 bg-black text-white rounded"
+            >
+              Convert to Blog
+            </button>
+            <button
+              onClick={() => routeToTool('slides')}
+              className="px-4 py-2 bg-black text-white rounded"
+            >
+              Convert to Slides
+            </button>
           </div>
         </>
       )}
